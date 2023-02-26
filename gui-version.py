@@ -17,7 +17,7 @@ class Application(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        self.label = tk.Label(self, text="Enter the number of digits of pi to calculate:")
+        self.label = tk.Label(self, text="Enter the number of digits of pi to calculate (maximum 50,000):")
         self.label.pack(side="top")
 
         self.entry = tk.Entry(self)
@@ -39,11 +39,17 @@ class Application(tk.Frame):
 
     def calculate_pi(self):
         n = int(self.entry.get())
-        pi = pi_spigot(n)
-        self.result_text.config(state="normal")
-        self.result_text.delete("1.0", "end")
-        self.result_text.insert("end", f"Pi with {n} digits of accuracy:\n{pi}")
-        self.result_text.config(state="disabled")
+        if n <= 50000:
+            pi = pi_spigot(n)
+            self.result_text.config(state="normal")
+            self.result_text.delete("1.0", "end")
+            self.result_text.insert("end", f"Pi with {n} digits of accuracy:\n{pi}")
+            self.result_text.config(state="disabled")
+        else:
+            self.result_text.config(state="normal")
+            self.result_text.delete("1.0", "end")
+            self.result_text.insert("end", "Error: maximum number of digits is 50,000")
+            self.result_text.config(state="disabled")
 
     def copy_result(self):
         self.master.clipboard_clear()
